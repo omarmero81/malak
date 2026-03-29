@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>ملك 🌙</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+:root{
+  --bg:#02010a;
+  --rose:#c8516e;
+  --rose2:#e8789a;
+  --gold:#d4a84b;
+  --gold2:#f0cc7a;
+  --blue:#7aaeff;
+  --purple:#9b6ed4;
+  --text:#f4eeff;
+  --muted:#6a5e88;
+}
+html{scroll-behavior:smooth;height:100%;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Tajawal',sans-serif;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+
+#starfield{position:fixed;inset:0;z-index:0;pointer-events:none;}
+.nebula{
+  position:fixed;inset:0;z-index:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse 90% 60% at 20% 25%,rgba(155,110,212,0.14) 0%,transparent 60%),
+    radial-gradient(ellipse 70% 80% at 85% 75%,rgba(200,81,110,0.11) 0%,transparent 60%),
+    radial-gradient(ellipse 100% 50% at 50% 105%,rgba(122,174,255,0.07) 0%,transparent 60%);
+  animation:ndrift 18s ease-in-out infinite alternate;
+}
+@keyframes ndrift{from{opacity:.7;}to{opacity:1;}}
+
+/* ══════════════ LOGIN ══════════════ */
+#login-screen{
+  position:fixed;inset:0;z-index:1000;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  background:radial-gradient(ellipse at center,#0d0820 0%,#02010a 100%);
+  transition:opacity .9s ease,transform .9s ease;
+  padding:24px;
+}
+#login-screen.exit{opacity:0;transform:scale(1.06);pointer-events:none;}
+
+.l-glow{
+  position:absolute;
+  width:min(380px,90vw);height:min(380px,90vw);
+  background:radial-gradient(circle,rgba(200,81,110,0.16) 0%,transparent 70%);
+  border-radius:50%;
+  animation:pglow 3s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes pglow{0%,100%{transform:scale(1);opacity:.7;}50%{transform:scale(1.15);opacity:1;}}
+
+.l-icon{
+  font-size:min(4.5rem,15vw);
+  margin-bottom:12px;
+  animation:hb 2s ease-in-out infinite;
+  filter:drop-shadow(0 0 20px var(--rose));
+  position:relative;z-index:1;
+}
+@keyframes hb{0%,100%{transform:scale(1);}15%{transform:scale(1.2);}30%{transform:scale(1);}45%{transform:scale(1.1);}}
+
+.l-title{
+  font-family:'Amiri',serif;
+  font-size:min(4.5rem,16vw);
+  color:var(--gold2);
+  text-shadow:0 0 40px rgba(240,204,122,0.6),0 0 80px rgba(240,204,122,0.2);
+  margin-bottom:6px;
+  position:relative;z-index:1;
+}
+.l-sub{
+  font-size:min(0.78rem,3.5vw);
+  color:var(--muted);
+  letter-spacing:5px;
+  text-transform:uppercase;
+  margin-bottom:36px;
+  position:relative;z-index:1;
+}
+
+.l-box{
+  position:relative;z-index:2;
+  display:flex;flex-direction:column;align-items:center;
+  gap:14px;
+  width:100%;max-width:300px;
+}
+
+.l-box input{
+  width:100%;
+  padding:18px 20px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(212,168,75,0.25);
+  border-radius:16px;
+  color:var(--text);
+  font-family:'Tajawal',sans-serif;
+  font-size:1.1rem;
+  text-align:center;
+  letter-spacing:6px;
+  outline:none;
+  transition:all .3s;
+  direction:ltr;
+  -webkit-appearance:none;
+  appearance:none;
+}
+.l-box input::placeholder{letter-spacing:2px;color:var(--muted);font-size:.8rem;}
+.l-box input:focus{
+  border-color:rgba(212,168,75,.6);
+  background:rgba(212,168,75,.06);
+  box-shadow:0 0 28px rgba(212,168,75,.12);
+}
+
+.l-dots{display:flex;gap:9px;}
+.ldot{
+  width:10px;height:10px;border-radius:50%;
+  background:rgba(255,255,255,.1);
+  border:1px solid rgba(255,255,255,.2);
+  transition:all .2s;
+}
+.ldot.on{background:var(--gold);border-color:var(--gold);box-shadow:0 0 10px var(--gold);}
+
+.l-hint{font-size:.72rem;color:var(--muted);letter-spacing:1px;margin-top:-4px;}
+
+.l-btn{
+  width:100%;
+  padding:17px;
+  background:linear-gradient(135deg,rgba(200,81,110,.9),rgba(155,110,212,.9));
+  border:1px solid rgba(200,81,110,.4);
+  border-radius:16px;
+  color:#fff;
+  font-family:'Tajawal',sans-serif;
+  font-size:1rem;font-weight:600;
+  cursor:pointer;
+  transition:all .25s;
+  letter-spacing:2px;
+  -webkit-appearance:none;
+  touch-action:manipulation;
+}
+.l-btn:active{transform:scale(.97);box-shadow:0 4px 20px rgba(200,81,110,.4);}
+
+.l-err{font-size:.82rem;color:#ff6b8a;opacity:0;transition:opacity .3s;margin-top:-6px;}
+.l-err.on{opacity:1;}
+
+/* ══════════════ MAIN ══════════════ */
+#main{display:none;}
+#main.show{display:block;}
+
+/* NAV DOTS — bottom on mobile */
+#ndots{
+  position:fixed;
+  bottom:20px;left:50%;
+  transform:translateX(-50%);
+  z-index:100;
+  display:flex;flex-direction:row;
+  gap:12px;
+  background:rgba(10,6,24,0.7);
+  backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.07);
+  border-radius:30px;
+  padding:10px 16px;
+}
+.nd{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--muted);cursor:pointer;
+  transition:all .3s;
+}
+.nd.active{
+  background:var(--gold);
+  box-shadow:0 0 10px var(--gold);
+  transform:scale(1.5);
+}
+
+section{
+  position:relative;z-index:1;
+  min-height:100svh;
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;
+  padding:70px 20px 90px;
+  text-align:center;
+}
+
+/* dividers & labels */
+.sdiv{width:1px;height:60px;background:linear-gradient(to bottom,transparent,var(--gold),transparent);margin:0 auto 32px;}
+.stag{font-size:.68rem;letter-spacing:5px;text-transform:uppercase;color:var(--purple);margin-bottom:10px;}
+.sh{font-family:'Amiri',serif;font-size:clamp(1.8rem,7vw,3rem);color:var(--gold2);text-shadow:0 0 30px rgba(240,204,122,.28);margin-bottom:8px;line-height:1.25;}
+.ssub{font-size:.92rem;color:rgba(244,238,255,.5);margin-bottom:24px;max-width:340px;line-height:1.8;}
+
+/* ── S1 HERO ── */
+.h-pre{font-size:.72rem;letter-spacing:7px;text-transform:uppercase;color:var(--muted);margin-bottom:20px;animation:fu 1s .3s both;}
+.h-name{
+  font-family:'Amiri',serif;
+  font-size:clamp(5.5rem,28vw,11rem);
+  line-height:.9;
+  color:transparent;
+  background:linear-gradient(135deg,var(--gold2) 0%,var(--gold) 40%,var(--rose2) 70%,var(--purple) 100%);
+  -webkit-background-clip:text;background-clip:text;
+  filter:drop-shadow(0 0 50px rgba(212,168,75,.35));
+  animation:fu 1s .6s both;
+  position:relative;
+}
+.h-name::after{
+  content:'♡';position:absolute;
+  font-size:.2em;top:.08em;left:-.08em;
+  -webkit-text-fill-color:var(--rose2);
+  animation:hb 2s infinite;
+}
+.h-tag{
+  font-family:'Amiri',serif;font-style:italic;
+  font-size:clamp(.95rem,4vw,1.25rem);
+  color:rgba(244,238,255,.44);
+  margin-top:16px;
+  animation:fu 1s .9s both;
+  max-width:300px;line-height:1.7;
+}
+.h-scroll{
+  margin-top:50px;
+  display:flex;flex-direction:column;align-items:center;gap:8px;
+  animation:fu 1s 1.3s both;
+  color:var(--muted);font-size:.68rem;letter-spacing:3px;
+}
+.h-line{
+  width:1px;height:44px;
+  background:linear-gradient(to bottom,var(--rose),transparent);
+  animation:hline 2s ease-in-out infinite;
+}
+@keyframes hline{0%{transform:scaleY(0);transform-origin:top;}50%{transform:scaleY(1);}100%{transform:scaleY(0);transform-origin:bottom;}}
+@keyframes fu{from{opacity:0;transform:translateY(28px);}to{opacity:1;transform:none;}}
+
+/* ── S2 COUNTER ── */
+.c-ring{position:relative;width:250px;height:250px;margin:14px auto;}
+.c-svg{position:absolute;inset:0;width:100%;height:100%;}
+.c-inner{
+  position:absolute;inset:26px;border-radius:50%;
+  background:radial-gradient(circle at 38% 35%,#1a1040,#060310);
+  border:1px solid rgba(212,168,75,.1);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+}
+.c-dnum{font-family:'Amiri',serif;font-size:3.4rem;color:var(--gold2);text-shadow:0 0 24px rgba(240,204,122,.45);line-height:1;}
+.c-dlbl{font-size:.68rem;letter-spacing:4px;color:var(--muted);margin-top:4px;}
+.c-smalls{display:flex;gap:10px;margin-top:16px;justify-content:center;}
+.csm{
+  padding:10px 14px;border-radius:12px;min-width:76px;text-align:center;
+  background:rgba(212,168,75,.05);border:1px solid rgba(212,168,75,.1);
+}
+.csm span{font-family:'Amiri',serif;font-size:1.7rem;color:var(--text);display:block;}
+.csm small{font-size:.62rem;letter-spacing:3px;color:var(--muted);}
+
+/* ── S3 LETTER ── */
+.ltr-card{
+  width:100%;max-width:500px;
+  padding:36px 26px;
+  background:linear-gradient(135deg,rgba(12,8,28,.88),rgba(20,10,36,.88));
+  border:1px solid rgba(200,81,110,.2);
+  border-radius:20px;
+  backdrop-filter:blur(14px);
+  box-shadow:0 0 60px rgba(200,81,110,.06),inset 0 0 50px rgba(200,81,110,.025);
+  position:relative;
+}
+.ltr-card::before{
+  content:'✦  رسالة في الفضاء  ✦';
+  position:absolute;top:-12px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(90deg,var(--bg),#100820,var(--bg));
+  padding:0 14px;color:var(--rose2);font-size:.65rem;letter-spacing:2px;white-space:nowrap;
+}
+.ltr-to{font-size:.72rem;letter-spacing:4px;color:var(--rose2);margin-bottom:22px;text-transform:uppercase;}
+#typed-text{
+  font-family:'Amiri',serif;
+  font-size:clamp(1rem,4vw,1.18rem);
+  line-height:2.4;color:rgba(244,238,255,.88);
+  text-align:right;min-height:160px;
+}
+.cblink{display:inline-block;width:2px;height:1em;background:var(--rose2);margin-right:1px;vertical-align:middle;animation:blink .8s step-end infinite;}
+@keyframes blink{0%,100%{opacity:1;}50%{opacity:0;}}
+.ltr-sig{font-family:'Amiri',serif;font-style:italic;color:var(--gold);font-size:1.05rem;margin-top:22px;opacity:0;transition:opacity 1.5s;display:flex;align-items:center;gap:6px;justify-content:flex-end;}
+.ltr-sig.on{opacity:1;}
+
+/* ── S4 STAR ── */
+.star-scene{
+  position:relative;
+  width:min(300px,85vw);
+  height:min(300px,85vw);
+  margin:14px auto 28px;
+}
+#star-c{
+  width:100%!important;height:100%!important;
+  border-radius:50%;
+  background:radial-gradient(circle at 40% 40%,#0c0a24,#030210);
+  border:1px solid rgba(122,174,255,.12);
+  box-shadow:0 0 50px rgba(122,174,255,.07);
+}
+.star-badge{
+  position:absolute;bottom:-16px;left:50%;transform:translateX(-50%);
+  background:linear-gradient(135deg,rgba(122,174,255,.1),rgba(155,110,212,.1));
+  border:1px solid rgba(122,174,255,.28);
+  border-radius:30px;padding:7px 22px;white-space:nowrap;
+  backdrop-filter:blur(8px);
+}
+.star-badge span{font-family:'Amiri',serif;font-size:.9rem;color:var(--blue);text-shadow:0 0 10px var(--blue);letter-spacing:2px;}
+.star-coords{font-size:.64rem;letter-spacing:2px;color:var(--muted);margin-top:26px;font-family:monospace;}
+.star-q{font-family:'Amiri',serif;font-style:italic;font-size:clamp(.95rem,4vw,1.08rem);color:rgba(244,238,255,.55);max-width:310px;line-height:2.2;margin-top:10px;}
+
+/* ── S5 PLANET ── */
+.pl-scene{
+  position:relative;
+  width:min(240px,80vw);
+  height:min(240px,80vw);
+  margin:6px auto 44px;
+}
+.pl-body{
+  position:absolute;
+  top:9%;left:9%;
+  width:82%;height:82%;
+  border-radius:50%;
+  background:radial-gradient(circle at 32% 30%,#8050c0 0%,#4020a0 30%,#1a0850 60%,#080320 100%);
+  box-shadow:0 0 0 1px rgba(155,110,212,.22),0 0 40px rgba(155,110,212,.2),inset -20px -14px 45px rgba(0,0,0,.7),inset 14px 6px 28px rgba(155,110,212,.14);
+  animation:pfloat 7s ease-in-out infinite;overflow:hidden;
+}
+.pl-body::after{content:'';position:absolute;top:14%;left:18%;width:30%;height:9%;background:rgba(255,255,255,.06);border-radius:50%;filter:blur(7px);}
+.pl-ring{
+  position:absolute;width:100%;height:28%;
+  top:36%;left:0;
+  border:2px solid;
+  border-color:rgba(212,168,75,.5) rgba(212,168,75,.08) rgba(212,168,75,.5) rgba(212,168,75,.08);
+  border-radius:50%;transform:rotateX(72deg);
+  box-shadow:0 0 16px rgba(212,168,75,.1);
+  animation:pfloat 7s ease-in-out infinite;
+}
+.pl-lbl{
+  position:absolute;top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  font-family:'Amiri',serif;font-size:min(2.5rem,9vw);
+  color:rgba(255,255,255,.9);text-shadow:0 0 24px rgba(255,255,255,.4);z-index:2;
+}
+@keyframes pfloat{0%,100%{transform:translateY(0);}50%{transform:translateY(-14px);}}
+
+.traits{display:flex;flex-direction:column;gap:10px;width:100%;max-width:380px;}
+.trait{
+  display:flex;align-items:flex-start;gap:12px;
+  padding:14px 16px;border-radius:13px;text-align:right;
+  background:rgba(155,110,212,.06);
+  border:1px solid rgba(155,110,212,.14);
+  transition:all .25s;
+  active-transform:scale(.98);
+}
+.trait:active{background:rgba(155,110,212,.14);}
+.tic{font-size:1.2rem;flex-shrink:0;margin-top:2px;}
+.ttx{font-size:.88rem;line-height:1.7;color:rgba(244,238,255,.82);}
+
+/* ── S6 BEFORE/AFTER ── */
+.ba-wrap{display:flex;flex-direction:column;gap:0;width:100%;max-width:360px;margin-top:16px;}
+.ba-card{padding:26px 22px;border-radius:0;}
+.ba-bef{
+  background:linear-gradient(135deg,rgba(14,11,28,.82),rgba(10,8,20,.82));
+  border:1px solid rgba(100,90,140,.18);
+  border-radius:18px 18px 0 0;border-bottom:none;
+}
+.ba-aft{
+  background:linear-gradient(135deg,rgba(28,10,18,.82),rgba(18,7,15,.82));
+  border:1px solid rgba(200,81,110,.22);
+  border-radius:0 0 18px 18px;border-top:none;
+  box-shadow:0 14px 40px rgba(200,81,110,.06);
+  position:relative;
+}
+.ba-aft::before{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(90deg,transparent,var(--rose2),transparent);border-radius:0 0 18px 18px;}
+.ba-lbl{font-size:.66rem;letter-spacing:4px;text-transform:uppercase;margin-bottom:12px;}
+.ba-bef .ba-lbl{color:var(--muted);}
+.ba-aft .ba-lbl{color:var(--rose2);}
+.ba-txt{font-family:'Amiri',serif;font-size:.98rem;line-height:2.2;color:rgba(244,238,255,.76);}
+
+.ba-mid{
+  display:flex;flex-direction:row;align-items:center;justify-content:center;gap:14px;
+  padding:14px 0;
+  background:rgba(10,6,20,.6);
+  border-left:1px solid rgba(100,90,140,.12);
+  border-right:1px solid rgba(100,90,140,.12);
+}
+.ba-mline{width:60px;height:1px;background:linear-gradient(to right,transparent,var(--gold),transparent);}
+.ba-mheart{font-size:1.2rem;filter:drop-shadow(0 0 8px var(--rose));animation:hb 2s infinite;}
+
+/* ── S7 FINAL ── */
+#s7{background:radial-gradient(ellipse at center bottom,rgba(200,81,110,.13) 0%,transparent 60%);}
+.fin-heart{font-size:min(5rem,18vw);display:block;margin-bottom:12px;animation:hb 1.8s ease-in-out infinite;filter:drop-shadow(0 0 34px var(--rose));}
+.fin-h{font-family:'Amiri',serif;font-size:clamp(2.4rem,10vw,4.5rem);color:transparent;background:linear-gradient(135deg,var(--gold2),var(--rose2));-webkit-background-clip:text;background-clip:text;filter:drop-shadow(0 0 24px rgba(212,168,75,.28));}
+.fin-q{font-family:'Amiri',serif;font-style:italic;font-size:clamp(.95rem,4.2vw,1.1rem);color:rgba(244,238,255,.55);max-width:320px;line-height:2.4;margin-top:14px;}
+.fin-date{font-size:.65rem;letter-spacing:4px;color:var(--muted);margin-top:20px;text-transform:uppercase;}
+
+/* REVEAL */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .85s ease,transform .85s ease;}
+.rv.vis{opacity:1;transform:none;}
+.d1{transition-delay:.1s;}.d2{transition-delay:.22s;}.d3{transition-delay:.35s;}.d4{transition-delay:.48s;}.d5{transition-delay:.62s;}
+</style>
+</head>
+<body>
+
+<canvas id="starfield"></canvas>
+<div class="nebula"></div>
+
+<!-- ════ LOGIN ════ -->
+<div id="login-screen">
+  <div class="l-glow"></div>
+  <div class="l-icon">🌙</div>
+  <h1 class="l-title">ملك</h1>
+  <p class="l-sub">هذا الكون ليكِ وحدك</p>
+  <div class="l-box">
+    <input type="password" id="pw" inputmode="numeric" pattern="[0-9]*"
+      placeholder="تاريخ مميز تعرفيه ♡" maxlength="9" autocomplete="off">
+    <div class="l-dots">
+      <div class="ldot" id="ld0"></div><div class="ldot" id="ld1"></div>
+      <div class="ldot" id="ld2"></div><div class="ldot" id="ld3"></div>
+      <div class="ldot" id="ld4"></div><div class="ldot" id="ld5"></div>
+      <div class="ldot" id="ld6"></div><div class="ldot" id="ld7"></div>
+    </div>
+    <p class="l-hint">تاريخ ميلادك بدون فراغات</p>
+    <button class="l-btn" onclick="tryLogin()">✦ ادخلي ✦</button>
+    <p class="l-err" id="lerr">❌ جربي تاني يا ملك</p>
+  </div>
+</div>
+
+<!-- ════ MAIN ════ -->
+<div id="main">
+
+<div id="ndots">
+  <div class="nd active" data-s="s1"></div>
+  <div class="nd" data-s="s2"></div>
+  <div class="nd" data-s="s3"></div>
+  <div class="nd" data-s="s4"></div>
+  <div class="nd" data-s="s5"></div>
+  <div class="nd" data-s="s6"></div>
+  <div class="nd" data-s="s7"></div>
+</div>
+
+<!-- S1 -->
+<section id="s1">
+  <p class="h-pre">رسالة إلى ملك الكون</p>
+  <h1 class="h-name">ملك</h1>
+  <p class="h-tag">في كون لا نهاية له — أنتِ كل اللي يستاهل يتشاف</p>
+  <div class="h-scroll">
+    <span>اكتشفي كونك</span>
+    <div class="h-line"></div>
+  </div>
+</section>
+
+<!-- S2 -->
+<section id="s2">
+  <div class="sdiv"></div>
+  <p class="stag rv">منذ ٦ مارس ٢٠٢٦</p>
+  <h2 class="sh rv d1">💫 من يوم ما جيتي</h2>
+  <p class="ssub rv d2">كل ثانية بعدك بتراكم — مش بتخلص</p>
+  <div class="c-ring rv d3">
+    <svg class="c-svg" viewBox="0 0 250 250" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#d4a84b" stop-opacity=".85"/>
+          <stop offset="50%" stop-color="#c8516e" stop-opacity=".6"/>
+          <stop offset="100%" stop-color="#9b6ed4" stop-opacity=".4"/>
+        </linearGradient>
+      </defs>
+      <circle cx="125" cy="125" r="118" fill="none" stroke="rgba(255,255,255,0.04)" stroke-width="1"/>
+      <circle cx="125" cy="125" r="118" fill="none" stroke="url(#rg)" stroke-width="1.5" stroke-linecap="round" transform="rotate(-90 125 125)"/>
+    </svg>
+    <div class="c-inner">
+      <span class="c-dnum" id="cnt-d">0</span>
+      <span class="c-dlbl">يوم</span>
+    </div>
+  </div>
+  <div class="c-smalls rv d4">
+    <div class="csm"><span id="cnt-h">00</span><small>ساعة</small></div>
+    <div class="csm"><span id="cnt-m">00</span><small>دقيقة</small></div>
+    <div class="csm"><span id="cnt-s">00</span><small>ثانية</small></div>
+  </div>
+</section>
+
+<!-- S3 -->
+<section id="s3">
+  <div class="sdiv"></div>
+  <p class="stag rv">🌙 رسالة في الفضاء</p>
+  <div class="ltr-card rv d1">
+    <div class="ltr-to">إلى ملك ✦</div>
+    <div id="typed-text"><span class="cblink"></span></div>
+    <div class="ltr-sig" id="sig">— عمر &nbsp;🤍</div>
+  </div>
+</section>
+
+<!-- S4 -->
+<section id="s4">
+  <div class="sdiv"></div>
+  <p class="stag rv">🌟 نجمتك في السما</p>
+  <h2 class="sh rv d1">هي ليكِ وحدك</h2>
+  <div class="star-scene rv d2">
+    <canvas id="star-c"></canvas>
+    <div class="star-badge"><span>★ Malak-1 ★</span></div>
+  </div>
+  <p class="star-coords rv d3">RA 14h 29m 43s · Dec +06° 15′ 22″</p>
+  <p class="star-q rv d4">
+    "في ليالي الفضاء اللانهائية،<br>في كل تلك النجوم المليار —<br>واحدة فقط اسمها ملك"
+  </p>
+</section>
+
+<!-- S5 -->
+<section id="s5">
+  <div class="sdiv"></div>
+  <p class="stag rv">🪐 كوكبها الخاص</p>
+  <h2 class="sh rv d1">Planet Malak</h2>
+  <p class="ssub rv d2">الكوكب الوحيد في الكون اللي جاذبيته بتسحبك للأبد</p>
+  <div class="pl-scene rv d3">
+    <div class="pl-ring"></div>
+    <div class="pl-body"><div class="pl-lbl">م</div></div>
+  </div>
+  <div class="traits">
+    <div class="trait rv d1"><span class="tic">✨</span><div class="ttx">جمال نادر — حاجة مش موجودة في أي مكان تاني في الكون</div></div>
+    <div class="trait rv d2"><span class="tic">💎</span><div class="ttx">صدق حقيقي — نادر الوجود بين البشر</div></div>
+    <div class="trait rv d3"><span class="tic">🌸</span><div class="ttx">روح مرحة — بتبعت موجات دفا وضحك على طول</div></div>
+    <div class="trait rv d4"><span class="tic">🌙</span><div class="ttx">جاذبية لا تقاوم — لما تقرب، مش هتقدري تبتعدي تاني</div></div>
+  </div>
+</section>
+
+<!-- S6 -->
+<section id="s6">
+  <div class="sdiv"></div>
+  <p class="stag rv">☄️ اليوم اللي غيّر كل حاجة</p>
+  <h2 class="sh rv d1">قبل وبعد</h2>
+  <div class="ba-wrap rv d2">
+    <div class="ba-card ba-bef">
+      <div class="ba-lbl">قبل ٦ مارس</div>
+      <p class="ba-txt">الحياة كانت فاضية ومكنشلها طعم.<br>الكون كان شاسع وبارد وما فيهوش معنى.</p>
+    </div>
+    <div class="ba-mid">
+      <div class="ba-mline"></div>
+      <div class="ba-mheart">♡</div>
+      <div class="ba-mline"></div>
+    </div>
+    <div class="ba-card ba-aft">
+      <div class="ba-lbl">بعد ٦ مارس</div>
+      <p class="ba-txt">النجوم اتنورت وكل حاجة اتغيرت.<br>جيتِ وخليتي الحياة تاخد معنى تاني.</p>
+    </div>
+  </div>
+</section>
+
+<!-- S7 -->
+<section id="s7">
+  <div class="sdiv"></div>
+  <span class="fin-heart rv">♡</span>
+  <h2 class="fin-h rv d1">بحبك يا ملك</h2>
+  <p class="fin-q rv d2">
+    "عمري ما حبيت حد زيكِ بجد.<br>
+    وربنا يخليكِ ليا ويجعلك من نصيبي.<br>
+    ينور عيني."
+  </p>
+  <p class="fin-date rv d3">٦ مارس ٢٠٢٦ · بداية كوكبنا</p>
+</section>
+
+</div>
+
+<script>
+// ── STARFIELD ──
+const sf=document.getElementById('starfield'),sc=sf.getContext('2d');
+let stars=[],shooters=[];
+function rsz(){sf.width=innerWidth;sf.height=innerHeight;mkStars();}
+function mkStars(){
+  stars=[];
+  const n=Math.floor(sf.width*sf.height/2400);
+  for(let i=0;i<n;i++){
+    const c=Math.random();
+    stars.push({x:Math.random()*sf.width,y:Math.random()*sf.height,
+      r:Math.random()*1.5+.2,a:Math.random(),da:(Math.random()-.5)*.007,
+      col:c>.75?'#a8c8ff':c>.5?'#ffd4e8':c>.25?'#ffe8a8':'#fff'});
+  }
+}
+function addShooter(){
+  if(Math.random()<.01)
+    shooters.push({x:Math.random()*sf.width*.6,y:Math.random()*sf.height*.35,
+      len:Math.random()*90+50,spd:Math.random()*6+4,a:1,ang:Math.PI/5.5});
+}
+function animSF(){
+  sc.clearRect(0,0,sf.width,sf.height);
+  stars.forEach(s=>{s.a+=s.da;if(s.a<=0||s.a>=1)s.da*=-1;
+    sc.beginPath();sc.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sc.fillStyle=s.col;sc.globalAlpha=s.a;sc.fill();});
+  addShooter();
+  shooters=shooters.filter(s=>s.a>0);
+  shooters.forEach(s=>{
+    sc.beginPath();sc.moveTo(s.x,s.y);
+    sc.lineTo(s.x-Math.cos(s.ang)*s.len,s.y-Math.sin(s.ang)*s.len);
+    const g=sc.createLinearGradient(s.x,s.y,s.x-Math.cos(s.ang)*s.len,s.y-Math.sin(s.ang)*s.len);
+    g.addColorStop(0,`rgba(255,255,255,${s.a})`);g.addColorStop(1,'transparent');
+    sc.strokeStyle=g;sc.lineWidth=1.5;sc.globalAlpha=s.a;sc.stroke();
+    s.x+=Math.cos(s.ang)*s.spd;s.y+=Math.sin(s.ang)*s.spd;s.a-=.02;
+  });
+  sc.globalAlpha=1;requestAnimationFrame(animSF);
+}
+window.addEventListener('resize',rsz);rsz();animSF();
+
+// ── LOGIN ──
+const pwEl=document.getElementById('pw');
+const ldots=document.querySelectorAll('.ldot');
+pwEl.addEventListener('input',()=>{
+  const l=pwEl.value.replace(/\D/g,'').length;
+  ldots.forEach((d,i)=>d.classList.toggle('on',i<l));
+});
+pwEl.addEventListener('keydown',e=>{if(e.key==='Enter')tryLogin();});
+
+function tryLogin(){
+  const v=pwEl.value.replace(/\D/g,'');
+  // accept: 28072010 or 2872010
+  if(v==='28072010'||v==='2872010'){
+    document.getElementById('login-screen').classList.add('exit');
+    setTimeout(()=>{
+      document.getElementById('login-screen').style.display='none';
+      document.getElementById('main').classList.add('show');
+      initMain();
+    },950);
+  } else {
+    const err=document.getElementById('lerr');
+    err.classList.add('on');
+    pwEl.style.borderColor='rgba(255,100,120,.6)';
+    pwEl.value='';
+    ldots.forEach(d=>d.classList.remove('on'));
+    // shake animation
+    pwEl.style.animation='none';
+    pwEl.offsetHeight;
+    setTimeout(()=>{err.classList.remove('on');pwEl.style.borderColor='';},2600);
+  }
+}
+
+function initMain(){
+  initCounter();
+  initStarC();
+  initReveal();
+  initNav();
+}
+
+// ── COUNTER ──
+function initCounter(){
+  const start=new Date('2026-03-06T00:00:00');
+  function upd(){
+    const diff=Math.max(0,new Date()-start),ts=Math.floor(diff/1000);
+    document.getElementById('cnt-d').textContent=Math.floor(ts/86400);
+    document.getElementById('cnt-h').textContent=String(Math.floor(ts/3600)%24).padStart(2,'0');
+    document.getElementById('cnt-m').textContent=String(Math.floor(ts/60)%60).padStart(2,'0');
+    document.getElementById('cnt-s').textContent=String(ts%60).padStart(2,'0');
+  }
+  upd();setInterval(upd,1000);
+}
+
+// ── TYPEWRITER ──
+const msg=`يا ملك،
+
+عمري ما حبيت حد زيكِ بجد.
+بحبكِ وهفضل أحبكِ
+ومش هحب غيركِ.
+وانتِ خلاص هتبقي مراتي —
+سواء برضاكِ أو لا 🙂
+
+وبدعي ربنا يخليكِ ليا
+ويجعلك من نصيبي.
+
+بشكر ربنا إنه عوّضني
+بـ ملوكتي 🌙
+بحبكِ أوي أوي.
+ربنا يخليكِ ليا — ينور عيني.`;
+
+let ti=0,typeOK=false;
+function typeNext(){
+  const el=document.getElementById('typed-text');
+  if(ti<msg.length){
+    const ch=msg[ti],cur2=el.querySelector('.cblink');
+    if(ch==='\n')cur2.before(document.createElement('br'));
+    else cur2.before(document.createTextNode(ch));
+    ti++;
+    setTimeout(typeNext,ch==='\n'?260:ch===' '?65:46);
+  }else{
+    document.getElementById('sig').classList.add('on');
+  }
+}
+
+// ── STAR CANVAS ──
+function initStarC(){
+  const c=document.getElementById('star-c');
+  const size=c.parentElement.offsetWidth;
+  c.width=size;c.height=size;
+  const ctx=c.getContext('2d');
+  const cx2=size/2,cy2=size/2;
+  const bs=[];
+  for(let i=0;i<180;i++)
+    bs.push({x:Math.random()*size,y:Math.random()*size,
+      r:Math.random()*1.2+.2,a:Math.random(),da:(Math.random()-.5)*.01});
+  let ang=0;
+  function draw(){
+    ctx.clearRect(0,0,size,size);
+    const bg=ctx.createRadialGradient(cx2*.8,cy2*.8,4,cx2,cy2,cx2);
+    bg.addColorStop(0,'#0e0930');bg.addColorStop(1,'#030110');
+    ctx.fillStyle=bg;ctx.beginPath();ctx.arc(cx2,cy2,cx2,0,Math.PI*2);ctx.fill();
+    bs.forEach(s=>{s.a+=s.da;if(s.a<.05||s.a>.95)s.da*=-1;
+      ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(168,200,255,${s.a})`;ctx.fill();});
+    const g1=ctx.createRadialGradient(cx2,cy2,6,cx2,cy2,cx2*.22);
+    g1.addColorStop(0,'rgba(122,174,255,0.5)');g1.addColorStop(1,'transparent');
+    ctx.fillStyle=g1;ctx.beginPath();ctx.arc(cx2,cy2,cx2*.22,0,Math.PI*2);ctx.fill();
+    ctx.beginPath();ctx.arc(cx2,cy2,6,0,Math.PI*2);
+    ctx.fillStyle='white';ctx.shadowColor='#a8c8ff';ctx.shadowBlur=24;ctx.fill();ctx.shadowBlur=0;
+    [cx2*.28,cx2*.42].forEach((r,ri)=>{
+      ctx.beginPath();ctx.arc(cx2,cy2,r,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(122,174,255,${ri?.05:.1})`;ctx.lineWidth=.7;ctx.stroke();
+    });
+    [{r:cx2*.28,a:ang,col:'#e8c87a',sz:4},{r:cx2*.42,a:-ang*.6,col:'#c8516e',sz:3}].forEach(o=>{
+      const ox=cx2+o.r*Math.cos(o.a),oy=cy2+o.r*Math.sin(o.a);
+      ctx.beginPath();ctx.arc(ox,oy,o.sz,0,Math.PI*2);
+      ctx.fillStyle=o.col;ctx.shadowColor=o.col;ctx.shadowBlur=12;ctx.fill();ctx.shadowBlur=0;
+    });
+    ang+=.009;requestAnimationFrame(draw);
+  }
+  draw();
+}
+
+// ── REVEAL ──
+let typeWatched=false;
+function initReveal(){
+  const els=document.querySelectorAll('.rv');
+  const obs=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        e.target.classList.add('vis');
+        if(!typeWatched&&e.target.closest('#s3')){
+          typeWatched=true;setTimeout(typeNext,700);
+        }
+      }
+    });
+  },{threshold:.1});
+  els.forEach(el=>obs.observe(el));
+}
+
+// ── NAV ──
+function initNav(){
+  const nds=document.querySelectorAll('.nd');
+  nds.forEach(d=>d.addEventListener('click',()=>{
+    document.getElementById(d.dataset.s).scrollIntoView({behavior:'smooth'});
+  }));
+  const ids=['s1','s2','s3','s4','s5','s6','s7'];
+  const so=new IntersectionObserver(entries=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const i=ids.indexOf(e.target.id);
+        nds.forEach(d=>d.classList.remove('active'));
+        if(nds[i])nds[i].classList.add('active');
+      }
+    });
+  },{threshold:.45});
+  ids.forEach(id=>{const el=document.getElementById(id);if(el)so.observe(el);});
+}
+</script>
+</body>
+</html>
